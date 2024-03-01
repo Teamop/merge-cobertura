@@ -8,12 +8,13 @@
     "build": "tsc",
     "prepare": "tsc",
     "test": "mocha --colors -r ts-node/register \"test/**/*.ts\"",
-    "lint": "eslint src --cache --ext .ts"
+    "lint": "eslint src --cache --ext .ts",
+    "prepublishOnly": "npm run build && npm test"
   },
-  "author": "",
+  "author": "Terry Zhang",
   "license": "MIT",
   "bin": {
-    "merge-cobertura": "./build/src/index.js"
+    "merge-cobertura": "build/src/index.js"
   },
   "dependencies": {
     "fast-xml-parser": "^4.3.5",
