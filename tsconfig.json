@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "module": "CommonJS",
+    "target": "ES2017",
+    "outDir": "build",
+    "rootDirs": ["src", "test"],
+    "lib": ["ES2017"],
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "moduleResolution": "Node",
+    "strict": true,
+    "skipDefaultLibCheck": true,
+    "sourceMap": true
+  }
+}
