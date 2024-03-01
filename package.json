@@ -1,6 +1,6 @@
 {
   "name": "merge-cobertura",
-  "version": "1.0.0",
+  "version": "1.0.0-alpha",
   "description": "Merges cobertura XML files",
   "main": "build/src/index.js",
   "typings": "build/src",
@@ -15,6 +15,10 @@
   "license": "MIT",
   "bin": {
     "merge-cobertura": "build/src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Teamop/merge-cobertura.git"
   },
   "dependencies": {
     "fast-xml-parser": "^4.3.5",
