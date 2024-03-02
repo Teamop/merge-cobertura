@@ -10,6 +10,7 @@ const options: XmlBuilderOptions = {
   ignoreAttributes : false,
   attributeNamePrefix: '',
   textNodeName: '$t',
+  suppressBooleanAttributes: false,
 };
 
 const builder = new XMLBuilder(options);
