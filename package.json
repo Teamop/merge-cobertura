@@ -1,6 +1,6 @@
 {
   "name": "merge-cobertura",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Merges cobertura XML files",
   "main": "build/src/index.js",
   "typings": "build/src",
@@ -13,7 +13,10 @@
   },
   "author": "Terry Zhang",
   "license": "MIT",
-  "keywords": ["cobertura", "merge cobertura"],
+  "keywords": [
+    "cobertura",
+    "merge cobertura"
+  ],
   "bin": {
     "merge-cobertura": "build/src/index.js"
   },
