@@ -13,6 +13,7 @@
   },
   "author": "Terry Zhang",
   "license": "MIT",
+  "keywords": ["cobertura", "merge cobertura"],
   "bin": {
     "merge-cobertura": "build/src/index.js"
   },
