@@ -1,5 +1,8 @@
 # Merge Cobertura
 
+![NPM Version](https://img.shields.io/npm/v/merge-cobertura)
+
+
 Utility to merge multiple cobertura xml files into one.
 
 ## Background
