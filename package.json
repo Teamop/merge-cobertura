@@ -22,7 +22,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Teamop/merge-cobertura.git"
+    "url": "git+https://github.com/Teamop/merge-cobertura.git"
   },
   "dependencies": {
     "fast-xml-parser": "^4.4.1",
