@@ -14,10 +14,10 @@ function printHelp() {
   ) as PackageJson;
 
   console.log(`Version ${packageJson.version}`);
-  console.log('Syntax:    cobertura-merge [options]... [package=input...]');
+  console.log('Syntax:    merge-cobertura [options]... [package=input...]');
   console.log('');
-  console.log('Examples:  cobertura-merge -o output.xml package1=output1.xml package2=output2.xml');
-  console.log('           cobertura-merge -p package1=output1.xml package2=output2.xml');
+  console.log('Examples:  merge-cobertura -o output.xml package1=output1.xml package2=output2.xml');
+  console.log('           merge-cobertura -p package1=output1.xml package2=output2.xml');
   console.log('');
   console.log('Options');
   console.log('-o FILE         Specify output file');
