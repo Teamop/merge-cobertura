@@ -8,7 +8,6 @@
     "build": "tsc",
     "prepare": "tsc",
     "test": "mocha --colors -r ts-node/register \"test/**/*.ts\"",
-    "lint": "eslint src --cache --ext .ts",
     "prepublishOnly": "npm run build && npm test"
   },
   "author": "Terry Zhang",
@@ -38,8 +37,7 @@
     "chai": "^4.4.1",
     "chai-almost": "^1.0.1",
     "chai-arrays": "^2.2.0",
-    "eslint": "^8.57.0",
-    "mocha": "^10.3.0",
+    "mocha": "^10.8.2",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3"
   }
