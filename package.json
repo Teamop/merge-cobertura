@@ -24,7 +24,7 @@
     "url": "git+https://github.com/Teamop/merge-cobertura.git"
   },
   "dependencies": {
-    "fast-xml-parser": "^5.3.4",
+    "fast-xml-parser": "^5.3.7",
     "minimist": "^1.2.8",
     "source-map-support": "^0.5.21"
   },
