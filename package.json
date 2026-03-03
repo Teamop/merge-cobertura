@@ -7,7 +7,7 @@
   "scripts": {
     "build": "tsc",
     "prepare": "tsc",
-    "test": "node --require ts-node/register --test test/**/*.ts",
+    "test": "node -r ts-node/register test/merge.ts",
     "prepublishOnly": "npm run build && npm test"
   },
   "author": "Terry Zhang",
