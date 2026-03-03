@@ -1,6 +1,5 @@
-import chai, { expect } from 'chai';
-import chaiAlmost from 'chai-almost';
-import chaiArrays from 'chai-arrays';
+import { describe, it } from 'test';
+import assert from 'assert';
 import { mergeInputs } from '../src/merge';
 import {
   EMPTY_INPUT_FILE,
@@ -10,32 +9,29 @@ import {
   EMPTY_INPUT_FILE_WITHOUT_CLASSES
 } from './data';
 import { Package, Class } from '../src/types/cobertura';
-const path = require('path'); 
-
-chai.use(chaiAlmost(100));
-chai.use(chaiArrays);
+const path = require('path');
 
 describe('mergeInputs', () => {
   it('should merge a single empty file', () => {
     const output = mergeInputs([EMPTY_INPUT_FILE]);
 
-    expect(output.coverage).to.exist;
-    expect(output.coverage['line-rate']).to.equal(EMPTY_INPUT_FILE.data.coverage['line-rate']);
-    expect(output.coverage['branch-rate']).to.equal(EMPTY_INPUT_FILE.data.coverage['branch-rate']);
-    expect(output.coverage['lines-covered']).to.equal(EMPTY_INPUT_FILE.data.coverage['lines-covered']);
-    expect(output.coverage['lines-valid']).to.equal(EMPTY_INPUT_FILE.data.coverage['lines-valid']);
-    expect(output.coverage['branches-covered']).to.equal(EMPTY_INPUT_FILE.data.coverage['branches-covered']);
-    expect(output.coverage['branches-valid']).to.equal(EMPTY_INPUT_FILE.data.coverage['branches-valid']);
-    expect(output.coverage.complexity).to.equal(EMPTY_INPUT_FILE.data.coverage.complexity);
-    expect(parseInt(output.coverage.timestamp, 10)).to.be.almost(Date.now(), 100);
-    expect(output.coverage.sources).to.be.array();
-    expect(output.coverage.sources!.length).to.equal(1);
-    expect(output.coverage.sources![0].source.length).to.equal(1);
-    expect(output.coverage.sources![0].source[0].$t).to.equal(process.cwd());
-    expect(output.coverage.packages).to.be.array();
-    expect(output.coverage.packages.length).to.equal(1);
-    expect((output.coverage.packages as Package[])[0].package).to.be.array();
-    expect((output.coverage.packages as Package[])[0].package.length).to.equal(0);
+    assert.ok(output.coverage);
+    assert.strictEqual(output.coverage['line-rate'], EMPTY_INPUT_FILE.data.coverage['line-rate']);
+    assert.strictEqual(output.coverage['branch-rate'], EMPTY_INPUT_FILE.data.coverage['branch-rate']);
+    assert.strictEqual(output.coverage['lines-covered'], EMPTY_INPUT_FILE.data.coverage['lines-covered']);
+    assert.strictEqual(output.coverage['lines-valid'], EMPTY_INPUT_FILE.data.coverage['lines-valid']);
+    assert.strictEqual(output.coverage['branches-covered'], EMPTY_INPUT_FILE.data.coverage['branches-covered']);
+    assert.strictEqual(output.coverage['branches-valid'], EMPTY_INPUT_FILE.data.coverage['branches-valid']);
+    assert.strictEqual(output.coverage.complexity, EMPTY_INPUT_FILE.data.coverage.complexity);
+    assert.ok(Math.abs(parseInt(output.coverage.timestamp, 10) - Date.now()) <= 100, 'timestamp should be within 100ms of now');
+    assert.ok(Array.isArray(output.coverage.sources));
+    assert.strictEqual(output.coverage.sources!.length, 1);
+    assert.strictEqual(output.coverage.sources![0].source.length, 1);
+    assert.strictEqual(output.coverage.sources![0].source[0].$t, process.cwd());
+    assert.ok(Array.isArray(output.coverage.packages));
+    assert.strictEqual(output.coverage.packages.length, 1);
+    assert.ok(Array.isArray((output.coverage.packages as Package[])[0].package));
+    assert.strictEqual((output.coverage.packages as Package[])[0].package.length, 0);
   });
 
   it('should merge two files into a single file', () => {
@@ -59,41 +55,46 @@ describe('mergeInputs', () => {
       parseInt(INPUT_FILE2.data.coverage.complexity, 10)
     );
 
-    expect(output.coverage).to.exist;
-    expect(output.coverage['line-rate']).to.equal((totalLinesCovered / totalLinesValid).toString());
-    expect(output.coverage['branch-rate']).to.equal((totalBranchesCovered / totalBranchesValid).toString());
-    expect(output.coverage['lines-covered']).to.equal(totalLinesCovered.toString());
-    expect(output.coverage['lines-valid']).to.equal(totalLinesValid.toString());
-    expect(output.coverage['branches-covered']).to.equal(totalBranchesCovered.toString());
-    expect(output.coverage['branches-valid']).to.equal(totalBranchesValid.toString());
-    expect(output.coverage.complexity).to.equal(complexity.toString());
-    expect(parseInt(output.coverage.timestamp, 10)).to.be.almost(Date.now(), 100);
-    expect(output.coverage.sources).to.be.array();
-    expect(output.coverage.sources!.length).to.equal(1);
-    expect(output.coverage.sources![0].source.length).to.equal(1);
-    expect(output.coverage.sources![0].source[0].$t).to.equal(process.cwd());
-    expect(output.coverage.packages).to.be.array();
-    expect(output.coverage.packages.length).to.equal(1);
-    expect((output.coverage.packages[0] as Package).package).to.be.array();
-    expect((output.coverage.packages[0] as Package).package.length).to.equal(2);
+    assert.ok(output.coverage);
+    assert.strictEqual(output.coverage['line-rate'], (totalLinesCovered / totalLinesValid).toString());
+    assert.strictEqual(output.coverage['branch-rate'], (totalBranchesCovered / totalBranchesValid).toString());
+    assert.strictEqual(output.coverage['lines-covered'], totalLinesCovered.toString());
+    assert.strictEqual(output.coverage['lines-valid'], totalLinesValid.toString());
+    assert.strictEqual(output.coverage['branches-covered'], totalBranchesCovered.toString());
+    assert.strictEqual(output.coverage['branches-valid'], totalBranchesValid.toString());
+    assert.strictEqual(output.coverage.complexity, complexity.toString());
+    assert.ok(Math.abs(parseInt(output.coverage.timestamp, 10) - Date.now()) <= 100, 'timestamp should be within 100ms of now');
+    assert.ok(Array.isArray(output.coverage.sources));
+    assert.strictEqual(output.coverage.sources!.length, 1);
+    assert.strictEqual(output.coverage.sources![0].source.length, 1);
+    assert.strictEqual(output.coverage.sources![0].source[0].$t, process.cwd());
+    assert.ok(Array.isArray(output.coverage.packages));
+    assert.strictEqual(output.coverage.packages.length, 1);
+    assert.ok(Array.isArray((output.coverage.packages[0] as Package).package));
+    assert.strictEqual((output.coverage.packages[0] as Package).package.length, 2);
 
     // Validate first output package
-    expect((output.coverage.packages[0] as Package).package[0].name).to.equal(
+    assert.strictEqual(
+      (output.coverage.packages[0] as Package).package[0].name,
       `${INPUT_FILE1.packageName}.${(INPUT_FILE1.data.coverage.packages[0] as Package).package[0].name}`
     );
-    expect((output.coverage.packages[0] as Package).package[0]['line-rate']).to.equal(
+    assert.strictEqual(
+      (output.coverage.packages[0] as Package).package[0]['line-rate'],
       (INPUT_FILE1.data.coverage.packages[0] as Package).package[0]['line-rate']
     );
-    expect((output.coverage.packages[0] as Package).package[0]['branch-rate']).to.equal(
+    assert.strictEqual(
+      (output.coverage.packages[0] as Package).package[0]['branch-rate'],
       (INPUT_FILE1.data.coverage.packages[0] as Package).package[0]['branch-rate']
     );
-    expect((output.coverage.packages[0] as Package).package[0].complexity).to.equal(
+    assert.strictEqual(
+      (output.coverage.packages[0] as Package).package[0].complexity,
       (INPUT_FILE1.data.coverage.packages[0] as Package).package[0].complexity
     );
 
-    expect((INPUT_FILE1.data.coverage.packages[0] as Package).package[0].classes).to.not.equal(null);
+    assert.notStrictEqual((INPUT_FILE1.data.coverage.packages[0] as Package).package[0].classes, null);
 
-    expect((output.coverage.packages[0] as Package).package[0].classes).to.deep.equal(
+    assert.deepStrictEqual(
+      (output.coverage.packages[0] as Package).package[0].classes,
       ((INPUT_FILE1.data.coverage.packages[0] as Package).package[0].classes as Class[]).map(
         (inputClasses: Class) => ({
           class: inputClasses.class.map(inputClass => ({
@@ -105,18 +106,22 @@ describe('mergeInputs', () => {
     );
 
     // Validate second output package
-    expect((output.coverage.packages[0] as Package).package[1].name).to.equal(INPUT_FILE2.packageName);
-    expect((output.coverage.packages[0] as Package).package[1]['line-rate']).to.equal(
+    assert.strictEqual((output.coverage.packages[0] as Package).package[1].name, INPUT_FILE2.packageName);
+    assert.strictEqual(
+      (output.coverage.packages[0] as Package).package[1]['line-rate'],
       (INPUT_FILE2.data.coverage.packages[0] as Package).package[0]['line-rate']
     );
-    expect((output.coverage.packages[0] as Package).package[1]['branch-rate']).to.equal(
+    assert.strictEqual(
+      (output.coverage.packages[0] as Package).package[1]['branch-rate'],
       (INPUT_FILE2.data.coverage.packages[0] as Package).package[0]['branch-rate']
     );
-    expect((output.coverage.packages[0] as Package).package[1].complexity).to.equal(
+    assert.strictEqual(
+      (output.coverage.packages[0] as Package).package[1].complexity,
       (INPUT_FILE2.data.coverage.packages[0] as Package).package[0].complexity
     );
-    expect((INPUT_FILE2.data.coverage.packages[0] as Package).package[0].classes).to.not.equal(null);
-    expect((output.coverage.packages[0] as Package).package[1].classes).to.deep.equal(
+    assert.notStrictEqual((INPUT_FILE2.data.coverage.packages[0] as Package).package[0].classes, null);
+    assert.deepStrictEqual(
+      (output.coverage.packages[0] as Package).package[1].classes,
       ((INPUT_FILE2.data.coverage.packages[0] as Package).package[0].classes as Class[]).map(
         (inputClasses: Class) => ({
           class: inputClasses.class.map(inputClass => ({
@@ -152,35 +157,39 @@ describe('mergeInputs', () => {
     const lineRate = (totalLinesCovered / totalLinesValid).toString();
     const branchRate = (totalBranchesCovered / totalBranchesValid).toString();
 
-    expect(output.coverage).to.exist;
-    expect(output.coverage['line-rate']).to.equal(lineRate);
-    expect(output.coverage['branch-rate']).to.equal(branchRate);
-    expect(output.coverage['lines-covered']).to.equal(totalLinesCovered.toString());
-    expect(output.coverage['lines-valid']).to.equal(totalLinesValid.toString());
-    expect(output.coverage['branches-covered']).to.equal(totalBranchesCovered.toString());
-    expect(output.coverage['branches-valid']).to.equal(totalBranchesValid.toString());
-    expect(output.coverage.complexity).to.equal(complexity);
-    expect(parseInt(output.coverage.timestamp, 10)).to.be.almost(Date.now(), 100);
-    expect(output.coverage.sources![0].source.length).to.equal(1);
-    expect(output.coverage.sources![0].source[0].$t).to.equal(process.cwd());
-    expect(output.coverage.packages).to.be.array();
-    expect(output.coverage.packages.length).to.equal(1);
-    expect((output.coverage.packages[0] as Package).package).to.be.array();
-    expect((output.coverage.packages[0] as Package).package.length).to.equal(2);
+    assert.ok(output.coverage);
+    assert.strictEqual(output.coverage['line-rate'], lineRate);
+    assert.strictEqual(output.coverage['branch-rate'], branchRate);
+    assert.strictEqual(output.coverage['lines-covered'], totalLinesCovered.toString());
+    assert.strictEqual(output.coverage['lines-valid'], totalLinesValid.toString());
+    assert.strictEqual(output.coverage['branches-covered'], totalBranchesCovered.toString());
+    assert.strictEqual(output.coverage['branches-valid'], totalBranchesValid.toString());
+    assert.strictEqual(output.coverage.complexity, complexity);
+    assert.ok(Math.abs(parseInt(output.coverage.timestamp, 10) - Date.now()) <= 100, 'timestamp should be within 100ms of now');
+    assert.strictEqual(output.coverage.sources![0].source.length, 1);
+    assert.strictEqual(output.coverage.sources![0].source[0].$t, process.cwd());
+    assert.ok(Array.isArray(output.coverage.packages));
+    assert.strictEqual(output.coverage.packages.length, 1);
+    assert.ok(Array.isArray((output.coverage.packages[0] as Package).package));
+    assert.strictEqual((output.coverage.packages[0] as Package).package.length, 2);
 
     // Validate first package
-    expect((output.coverage.packages[0] as Package).package[0].name).to.equal(INPUT_FILE2.packageName);
-    expect((output.coverage.packages[0] as Package).package[0]['line-rate']).to.equal(
+    assert.strictEqual((output.coverage.packages[0] as Package).package[0].name, INPUT_FILE2.packageName);
+    assert.strictEqual(
+      (output.coverage.packages[0] as Package).package[0]['line-rate'],
       (INPUT_FILE2.data.coverage.packages[0] as Package).package[0]['line-rate']
     );
-    expect((output.coverage.packages[0] as Package).package[0]['branch-rate']).to.equal(
+    assert.strictEqual(
+      (output.coverage.packages[0] as Package).package[0]['branch-rate'],
       (INPUT_FILE2.data.coverage.packages[0] as Package).package[0]['branch-rate']
     );
-    expect((output.coverage.packages[0] as Package).package[0].complexity).to.equal(
+    assert.strictEqual(
+      (output.coverage.packages[0] as Package).package[0].complexity,
       (INPUT_FILE2.data.coverage.packages[0] as Package).package[0].complexity
     );
-    expect((INPUT_FILE2.data.coverage.packages[0] as Package).package[0].classes).to.not.equal(null);
-    expect((output.coverage.packages[0] as Package).package[0].classes).to.deep.equal(
+    assert.notStrictEqual((INPUT_FILE2.data.coverage.packages[0] as Package).package[0].classes, null);
+    assert.deepStrictEqual(
+      (output.coverage.packages[0] as Package).package[0].classes,
       ((INPUT_FILE2.data.coverage.packages[0] as Package).package[0].classes as Class[]).map(
         (inputClasses: Class) => ({
           class: inputClasses.class.map(inputClass => ({
@@ -192,13 +201,15 @@ describe('mergeInputs', () => {
     );
 
     // Validate second package
-    expect((output.coverage.packages[0] as Package).package[1].name).to.equal(
+    assert.strictEqual(
+      (output.coverage.packages[0] as Package).package[1].name,
       INPUT_FILE_WITH_ROOT_CLASSES.packageName
     );
-    expect((output.coverage.packages[0] as Package).package[1]['line-rate']).to.equal(lineRate);
-    expect((output.coverage.packages[0] as Package).package[1]['branch-rate']).to.equal(branchRate);
-    expect((output.coverage.packages[0] as Package).package[1].complexity).to.equal(complexity);
-    expect((output.coverage.packages[0] as Package).package[1].classes).to.deep.equal(
+    assert.strictEqual((output.coverage.packages[0] as Package).package[1]['line-rate'], lineRate);
+    assert.strictEqual((output.coverage.packages[0] as Package).package[1]['branch-rate'], branchRate);
+    assert.strictEqual((output.coverage.packages[0] as Package).package[1].complexity, complexity);
+    assert.deepStrictEqual(
+      (output.coverage.packages[0] as Package).package[1].classes,
       (INPUT_FILE_WITH_ROOT_CLASSES.data.coverage.packages[0] as Class).class.map(jsonClass => ({
         class: [
           {
@@ -234,35 +245,39 @@ describe('mergeInputs', () => {
     const lineRate = (totalLinesCovered / totalLinesValid).toString();
     const branchRate = (totalBranchesCovered / totalBranchesValid).toString();
 
-    expect(output.coverage).to.exist;
-    expect(output.coverage['line-rate']).to.equal(lineRate);
-    expect(output.coverage['branch-rate']).to.equal(branchRate);
-    expect(output.coverage['lines-covered']).to.equal(totalLinesCovered.toString());
-    expect(output.coverage['lines-valid']).to.equal(totalLinesValid.toString());
-    expect(output.coverage['branches-covered']).to.equal(totalBranchesCovered.toString());
-    expect(output.coverage['branches-valid']).to.equal(totalBranchesValid.toString());
-    expect(output.coverage.complexity).to.equal(complexity);
-    expect(parseInt(output.coverage.timestamp, 10)).to.be.almost(Date.now(), 100);
-    expect(output.coverage.sources![0].source.length).to.equal(1);
-    expect(output.coverage.sources![0].source[0].$t).to.equal(process.cwd());
-    expect(output.coverage.packages).to.be.array();
-    expect(output.coverage.packages.length).to.equal(1);
-    expect((output.coverage.packages[0] as Package).package).to.be.array();
-    expect((output.coverage.packages[0] as Package).package.length).to.equal(2);
+    assert.ok(output.coverage);
+    assert.strictEqual(output.coverage['line-rate'], lineRate);
+    assert.strictEqual(output.coverage['branch-rate'], branchRate);
+    assert.strictEqual(output.coverage['lines-covered'], totalLinesCovered.toString());
+    assert.strictEqual(output.coverage['lines-valid'], totalLinesValid.toString());
+    assert.strictEqual(output.coverage['branches-covered'], totalBranchesCovered.toString());
+    assert.strictEqual(output.coverage['branches-valid'], totalBranchesValid.toString());
+    assert.strictEqual(output.coverage.complexity, complexity);
+    assert.ok(Math.abs(parseInt(output.coverage.timestamp, 10) - Date.now()) <= 100, 'timestamp should be within 100ms of now');
+    assert.strictEqual(output.coverage.sources![0].source.length, 1);
+    assert.strictEqual(output.coverage.sources![0].source[0].$t, process.cwd());
+    assert.ok(Array.isArray(output.coverage.packages));
+    assert.strictEqual(output.coverage.packages.length, 1);
+    assert.ok(Array.isArray((output.coverage.packages[0] as Package).package));
+    assert.strictEqual((output.coverage.packages[0] as Package).package.length, 2);
 
     // Validate first package
-    expect((output.coverage.packages[0] as Package).package[0].name).to.equal(INPUT_FILE2.packageName);
-    expect((output.coverage.packages[0] as Package).package[0]['line-rate']).to.equal(
+    assert.strictEqual((output.coverage.packages[0] as Package).package[0].name, INPUT_FILE2.packageName);
+    assert.strictEqual(
+      (output.coverage.packages[0] as Package).package[0]['line-rate'],
       (INPUT_FILE2.data.coverage.packages[0] as Package).package[0]['line-rate']
     );
-    expect((output.coverage.packages[0] as Package).package[0]['branch-rate']).to.equal(
+    assert.strictEqual(
+      (output.coverage.packages[0] as Package).package[0]['branch-rate'],
       (INPUT_FILE2.data.coverage.packages[0] as Package).package[0]['branch-rate']
     );
-    expect((output.coverage.packages[0] as Package).package[0].complexity).to.equal(
+    assert.strictEqual(
+      (output.coverage.packages[0] as Package).package[0].complexity,
       (INPUT_FILE2.data.coverage.packages[0] as Package).package[0].complexity
     );
-    expect((INPUT_FILE2.data.coverage.packages[0] as Package).package[0].classes).to.not.equal(null);
-    expect((output.coverage.packages[0] as Package).package[0].classes).to.deep.equal(
+    assert.notStrictEqual((INPUT_FILE2.data.coverage.packages[0] as Package).package[0].classes, null);
+    assert.deepStrictEqual(
+      (output.coverage.packages[0] as Package).package[0].classes,
       ((INPUT_FILE2.data.coverage.packages[0] as Package).package[0].classes as Class[]).map(
         (inputClasses: Class) => ({
           class: inputClasses.class.map(inputClass => ({
@@ -274,18 +289,22 @@ describe('mergeInputs', () => {
     );
 
     // Validate second package
-    expect((output.coverage.packages[0] as Package).package[1].name).to.equal(
+    assert.strictEqual(
+      (output.coverage.packages[0] as Package).package[1].name,
       `${EMPTY_INPUT_FILE_WITHOUT_CLASSES.packageName}.${
         (EMPTY_INPUT_FILE_WITHOUT_CLASSES.data.coverage.packages[0] as Package).package[0].name
       }`
     );
-    expect((output.coverage.packages[0] as Package).package[1]['line-rate']).to.equal(
+    assert.strictEqual(
+      (output.coverage.packages[0] as Package).package[1]['line-rate'],
       (EMPTY_INPUT_FILE_WITHOUT_CLASSES.data.coverage.packages[0] as Package).package[0]['line-rate']
     );
-    expect((output.coverage.packages[0] as Package).package[1]['branch-rate']).to.equal(
+    assert.strictEqual(
+      (output.coverage.packages[0] as Package).package[1]['branch-rate'],
       (EMPTY_INPUT_FILE_WITHOUT_CLASSES.data.coverage.packages[0] as Package).package[0]['branch-rate']
     );
-    expect((output.coverage.packages[0] as Package).package[1].complexity).to.equal(
+    assert.strictEqual(
+      (output.coverage.packages[0] as Package).package[1].complexity,
       (EMPTY_INPUT_FILE_WITHOUT_CLASSES.data.coverage.packages[0] as Package).package[0].complexity
     );
   });
